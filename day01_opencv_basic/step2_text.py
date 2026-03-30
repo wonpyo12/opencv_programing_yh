@@ -14,7 +14,7 @@ cv.addWeighted(overLay, 0.5, img, 0.5, 0, img)
 font = cv.FONT_HERSHEY_SIMPLEX
 cv.putText(img,'YH',(10,350), font, 1,(255,255,255),2,cv.LINE_AA)
 cv.putText(img,'wonpyo',(10,400), font, 1,(255,255,255),2,cv.LINE_AA)
-
+cv.imwrite("my_id_card.png",img)
 cv.imshow("Drawing image",img)
 cv.waitKey(0)
 cv.destroyAllWindows
