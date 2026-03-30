@@ -47,4 +47,3 @@ while(1):
         break
  
 cv.destroyAllWindows()
-
