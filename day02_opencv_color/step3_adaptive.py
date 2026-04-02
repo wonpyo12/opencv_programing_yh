@@ -40,7 +40,7 @@ while True:
     top = np.hstack([th_global, th_otsu])
     bottom = np.hstack([th_mean, th_gaussian])
     result = np.vstack([top, bottom])
-    result_size = cv.resize(result, None, fx=0.5, fy=0.5, interpolation=cv.INTER_AREA)
+    result_size = cv.resize(result, None, fx=0.7, fy=0.5, interpolation=cv.INTER_AREA)
     cv.imshow(window_name,result_size)
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
