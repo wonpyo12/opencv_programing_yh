@@ -22,6 +22,11 @@ def get_sample(filename, repo='insightbook'):
 def onMouse(event, x, y, flags, param):  #마우스 이벤트 콜백 함수 구현 ---① 
     global  pts_cnt,draw,pts,img                     # 마우스로 찍은 좌표의 갯수 저장
     if event == cv.EVENT_LBUTTONDOWN:  
+        if pts_cnt == 4:
+            pts_cnt = 0             
+            draw = img.copy()       
+            cv.imshow(win_name, draw)
+        
         cv.circle(draw, (x,y), 10, (0,255,0), -1) # 좌표에 초록색 동그라미 표시
         cv.imshow(win_name, draw)
 
@@ -95,6 +100,7 @@ while True:
     cv.setMouseCallback(win_name, onMouse)
     
     if cv.waitKey(1) & 0xFF == ord('q'):  # 'q' 누르면 종료
+       
         break
 
 cap.release()
