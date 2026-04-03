@@ -49,7 +49,7 @@ while(1):
 
     lower = np.array([h_min, s_min, v_min])
     upper = np.array([h_max, s_max, v_max])
-
+    
     mask = cv.inRange(hsv, lower, upper)
     result = cv.bitwise_and(frame, frame, mask=mask)
 
