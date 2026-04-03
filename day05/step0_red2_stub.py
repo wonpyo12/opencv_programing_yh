@@ -1,6 +1,7 @@
 ﻿import cv2 as cv
 import numpy as np
 import serial
+import time
 try:
     ser = serial.Serial('COM6', 9600, timeout=1) 
     print("✅ 아두이노와 연결되었습니다.")
@@ -56,13 +57,16 @@ if not cap.isOpened():
 box_history = []
 MAX_HISTORY = 5
 detected = False
+prev_time = 0
 while True :
     ret, frame = cap.read()
     if not ret:
         print("❌ 프레임을 읽을 수 없습니다")
         cap.release()
         exit()
-    
+    current_time = time.time()
+    fps = 1.0 / (current_time - prev_time + 1e-6) 
+    prev_time = current_time
 # detect_color() 함수가 아직 구현되지 않았으므로 False 반환
     result ,mask,area= detect_color(frame)
 
@@ -90,6 +94,8 @@ while True :
             if ser is not None:
                 ser.write(b'0')
             detected = False    
+    cv.putText(frame, f"FPS: {int(fps)}", (10, 30), 
+               cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
     cv.imshow("cap",frame)
     cv.imshow("Color Mask", mask)
     if cv.waitKey(1) & 0xFF == ord('q'):  # 'q' 누르면 종료
