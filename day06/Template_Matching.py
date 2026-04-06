@@ -22,33 +22,22 @@ def get_sample(filename, repo='insightbook'):
         urllib.request.urlretrieve(url, filename)
     return filename
 
-# 이미지 로드
-import cv2 as cv
-import numpy as np
 
-# 이미지 로드
-img = cv.imread(get_sample('messi5.jpg'))
+
+img = cv.imread(get_sample('sudoku.png'))
 gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-template = gray[80:230, 20:150]
+edges = cv.Canny(gray, 50, 150, apertureSize=3)
 
-# Template Matching
-result = cv.matchTemplate(gray, template, cv.TM_CCOEFF_NORMED)
+# 선분 방식: (x1, y1, x2, y2) 시작점과 끝점으로 표현
+lines = cv.HoughLinesP(edges, 1, np.pi/180, 
+                       threshold=20, minLineLength=50, maxLineGap=10)
 
-# 임계값 이상의 모든 매칭 위치 찾기
-threshold = 0.8  # 80% 이상 유사도
-locations = np.where(result >= threshold)
+# 검출된 직선 그리기
+if lines is not None:
+    for line in lines:
+        x1, y1, x2, y2 = line[0]
+        cv.line(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
-# 모든 후보 표시
-result_img = img.copy()
-h, w = template.shape[:2]
-
-for y, x in zip(locations[0], locations[1]):
-    top_left = (x, y)
-    bottom_right = (x + w, y + h)
-    cv.rectangle(result_img, top_left, bottom_right, (0, 255, 0), 1)
-
-cv.imshow('All Matches Above Threshold', result_img)
+cv.imshow('Hough Lines P', img)
 cv.waitKey(0)
 cv.destroyAllWindows()
-
-print(f"Found {len(locations[0])} matches above {threshold} threshold")
