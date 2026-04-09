@@ -6,7 +6,7 @@ from sampledownload import get_sample
 
 # ① 이미지 로드 ---
 
-K = 2  # 클러스터 개수 (16가지 색상으로 압축)
+K = 16  # 클러스터 개수 (16가지 색상으로 압축)
 
 img = cv2.imread(get_sample('taekwonv1.jpg'))
 
